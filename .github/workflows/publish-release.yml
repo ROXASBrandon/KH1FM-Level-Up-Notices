@@ -1,0 +1,34 @@
+name: Publish OpenKH Release
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/publish-release.yml
+      - .github/publish_release.py
+      - downloads/KH1FM-Level-Up-Notices-v1.0.0.zip
+      - downloads/SHA256SUMS.txt
+permissions:
+  contents: write
+concurrency:
+  group: publish-v1
+  cancel-in-progress: false
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Verify source, test timing, and publish release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ZIP_SHA256: 4e625edf0654ff861b58b4ce2924a7617433dc8493ac213a530421b4ce1ea6ab
+        run: |
+          python3 - <<'PYCODE'
+          import os, urllib.request
+          repo = os.environ['GITHUB_REPOSITORY']
+          sha = os.environ['GITHUB_SHA']
+          url = f'https://raw.githubusercontent.com/{repo}/{sha}/.github/publish_release.py'
+          with urllib.request.urlopen(url, timeout=120) as response:
+              code = response.read()
+          exec(compile(code, 'publish_release.py', 'exec'), {'__name__': '__main__'})
+          PYCODE

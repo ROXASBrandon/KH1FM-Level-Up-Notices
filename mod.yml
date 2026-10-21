@@ -1,0 +1,15 @@
+title: Level Up Notices - 8 Seconds
+originalAuthor: ROXASBrandon
+description: >
+  Hold native party level-up cards for eight seconds, then fade normally.
+  Steam Global 1.0.0.2 and LuaBackend required. Version 1.0.0.
+game: kh1
+assets:
+  - name: scripts/kh1_level_up_notices.lua
+    method: copy
+    source:
+      - name: scripts/kh1_level_up_notices.lua
+  - name: scripts/io_packages/kh1_level_up_notices.dll
+    method: copy
+    source:
+      - name: scripts/io_packages/kh1_level_up_notices.dll
